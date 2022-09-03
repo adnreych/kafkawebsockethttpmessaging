@@ -1,15 +1,17 @@
 version: "2"
 services:
-  circlemessaging:
+  mc1:
     build: .
-    command: java -jar /mc1/target/mc1-0.0.1-SNAPSHOT.war && java -jar /mc2/target/mc1-0.0.1-SNAPSHOT.war
+    command: java -jar /app/mc1/target/mc1-0.0.1-SNAPSHOT.jar
     environment:
       SPRING_DATASOURCE_URL: jdbc:mariadb://host.docker.internal:3306/springbootdb
     ports:
-      - "8081:8081"
       - "8082:8082"
-    networks:
-      - circlemessaging
+  mc2:
+    build: .
+    command: java -jar /app/mc2/target/mc2-0.0.1-SNAPSHOT.jar
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mariadb://host.docker.internal:3306/springbootdb
+    ports:
+      - "8083:8083"
 
-networks:
-  circlemessaging: null

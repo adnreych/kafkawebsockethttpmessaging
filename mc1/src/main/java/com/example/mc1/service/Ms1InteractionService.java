@@ -15,6 +15,8 @@ import java.time.LocalDateTime;
 @Service
 public class Ms1InteractionService {
 
+    private static final String URI = "ws://mc2:8083/socketHandler";
+
     private final CircularMessageRepository circularMessageRepository;
 
     public Ms1InteractionService(CircularMessageRepository circularMessageRepository) {
@@ -27,7 +29,7 @@ public class Ms1InteractionService {
         circularMessage.setMc1Timestamp(LocalDateTime.now());
         circularMessage = circularMessageRepository.save(circularMessage);
         try {
-            final WebsocketClientEndpoint clientEndPoint = new WebsocketClientEndpoint(new URI("ws://localhost:8083/socketHandler"));
+            final WebsocketClientEndpoint clientEndPoint = new WebsocketClientEndpoint(new URI(URI));
             ObjectMapper mapper = JsonMapper.builder()
                     .addModule(new JavaTimeModule())
                     .build();
