@@ -14,4 +14,11 @@ services:
       SPRING_DATASOURCE_URL: jdbc:mariadb://host.docker.internal:3306/springbootdb
     ports:
       - "8083:8083"
+  mc3:
+    build: .
+    command: java -jar /app/mc3/target/mc2-0.0.1-SNAPSHOT.jar
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mariadb://host.docker.internal:3306/springbootdb
+    ports:
+      - "8084:8084"
 
