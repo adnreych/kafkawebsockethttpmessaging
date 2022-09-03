@@ -1,4 +1,4 @@
-package com.example.mc2;
+ package com.example.mc3;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
@@ -17,18 +17,18 @@ import org.springframework.kafka.annotation.EnableKafka;
 
 import java.io.IOException;
 
-@SpringBootApplication
-@ComponentScan({"com.example.mc2.controller", "com.example.mc2.config", "com.example.mc2.service"})
+ @SpringBootApplication
+@ComponentScan({"com.example.mc3.controller", "com.example.mc3.config", "com.example.mc3.service"})
 @EnableJpaRepositories(
-		basePackages = "com.example.mc2.repository"
+		basePackages = "com.example.mc3.repository"
 )
 @EntityScan(basePackages = "com.example.mc2.model")
 @EnableKafka
 @PropertySource({"classpath:kafka.properties"})
-public class Mc2Application {
+public class Mc3Application {
 
 	public static void main(String[] args) {
-		SpringApplication.run(Mc2Application.class, args);
+		SpringApplication.run(Mc3Application.class, args);
 	}
 
 	@Bean
