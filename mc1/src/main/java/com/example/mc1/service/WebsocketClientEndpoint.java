@@ -1,15 +1,8 @@
 package com.example.mc1.service;
 
+import javax.websocket.*;
 import java.net.URI;
 import java.nio.ByteBuffer;
-import javax.websocket.ClientEndpoint;
-import javax.websocket.CloseReason;
-import javax.websocket.ContainerProvider;
-import javax.websocket.OnClose;
-import javax.websocket.OnMessage;
-import javax.websocket.OnOpen;
-import javax.websocket.Session;
-import javax.websocket.WebSocketContainer;
 
 @ClientEndpoint
 public class WebsocketClientEndpoint {
@@ -66,14 +59,6 @@ public class WebsocketClientEndpoint {
         System.out.println("Handle byte buffer");
     }
 
-    /**
-     * register message handler
-     *
-     * @param msgHandler
-     */
-    public void addMessageHandler(MessageHandler msgHandler) {
-        this.messageHandler = msgHandler;
-    }
 
     /**
      * Send a message.

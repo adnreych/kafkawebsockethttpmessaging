@@ -1,5 +1,9 @@
 package com.example.mc2.controller;
 
+import com.example.common.model.CircularMessage;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.json.JsonMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Component;
@@ -15,6 +19,10 @@ public class MyWebSocketHandler extends TextWebSocketHandler {
     @Override
     protected void handleTextMessage(WebSocketSession session, TextMessage message)
             throws Exception {
-        logger.info("fgsdfgdf" + message.getPayload());
+        ObjectMapper mapper = JsonMapper.builder()
+                .addModule(new JavaTimeModule())
+                .build();
+        CircularMessage circularMessage = mapper.readValue(message.getPayload(), CircularMessage.class);
+        logger.info("circularMessage in mc2" + circularMessage.toString());
     }
 }

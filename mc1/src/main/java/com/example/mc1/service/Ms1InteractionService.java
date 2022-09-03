@@ -11,12 +11,9 @@ import org.springframework.stereotype.Service;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.logging.Logger;
 
 @Service
 public class Ms1InteractionService {
-
-    private final Logger log = Logger.getLogger(this.getClass().getSimpleName());
 
     private final InteractionService interactionService;
 
