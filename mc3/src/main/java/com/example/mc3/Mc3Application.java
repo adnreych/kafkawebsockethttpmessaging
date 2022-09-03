@@ -17,17 +17,18 @@ import org.springframework.kafka.annotation.EnableKafka;
 
 import java.io.IOException;
 
- @SpringBootApplication
+@SpringBootApplication
 @ComponentScan({"com.example.mc3.controller", "com.example.mc3.config", "com.example.mc3.service"})
 @EnableJpaRepositories(
 		basePackages = "com.example.mc3.repository"
 )
-@EntityScan(basePackages = "com.example.mc2.model")
+@EntityScan(basePackages = "com.example.mc3.model")
 @EnableKafka
 @PropertySource({"classpath:kafka.properties"})
 public class Mc3Application {
 
 	public static void main(String[] args) {
+		System.setProperty("java.security.auth.login.config","classpath:jaas.conf");
 		SpringApplication.run(Mc3Application.class, args);
 	}
 

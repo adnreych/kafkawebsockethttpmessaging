@@ -1,6 +1,7 @@
 package com.example.mc2.controller;
 
 import com.example.mc2.model.CircularMessage;
+import com.example.mc2.service.TransportService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
@@ -16,6 +17,12 @@ public class MyWebSocketHandler extends TextWebSocketHandler {
 
     private Logger logger = LogManager.getLogger(MyWebSocketHandler.class);
 
+    private final TransportService transportService;
+
+    public MyWebSocketHandler(TransportService transportService) {
+        this.transportService = transportService;
+    }
+
     @Override
     protected void handleTextMessage(WebSocketSession session, TextMessage message)
             throws Exception {
@@ -24,5 +31,6 @@ public class MyWebSocketHandler extends TextWebSocketHandler {
                 .build();
         CircularMessage circularMessage = mapper.readValue(message.getPayload(), CircularMessage.class);
         logger.info("circularMessage in mc2" + circularMessage.toString());
+        transportService.send(circularMessage);
     }
 }
