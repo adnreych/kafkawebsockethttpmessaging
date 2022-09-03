@@ -1,8 +1,7 @@
 package com.example.mc1.service;
 
-import com.example.common.model.CircularMessage;
-import com.example.common.model.ServiceName;
-import com.example.common.service.InteractionService;
+import com.example.mc1.model.CircularMessage;
+import com.example.mc1.repository.CircularMessageRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.json.JsonMapper;
@@ -11,20 +10,22 @@ import org.springframework.stereotype.Service;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.time.LocalDateTime;
 
 @Service
 public class Ms1InteractionService {
 
-    private final InteractionService interactionService;
+    private final CircularMessageRepository circularMessageRepository;
 
-
-    public Ms1InteractionService(InteractionService interactionService) {
-        this.interactionService = interactionService;
+    public Ms1InteractionService(CircularMessageRepository circularMessageRepository) {
+        this.circularMessageRepository = circularMessageRepository;
     }
+
 
     public void startInteraction() {
         CircularMessage circularMessage = new CircularMessage();
-        interactionService.provideInteraction(ServiceName.MS1, circularMessage);
+        circularMessage.setMc1Timestamp(LocalDateTime.now());
+        circularMessage = circularMessageRepository.save(circularMessage);
         try {
             final WebsocketClientEndpoint clientEndPoint = new WebsocketClientEndpoint(new URI("ws://localhost:8083/socketHandler"));
             ObjectMapper mapper = JsonMapper.builder()

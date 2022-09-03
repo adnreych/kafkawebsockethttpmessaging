@@ -2,7 +2,7 @@ package com.example.common.service;
 
 import com.example.common.model.CircularMessage;
 import com.example.common.model.ServiceName;
-import com.example.common.repository.CircularMessageRepository;
+import com.example.mc1.repository.CircularMessageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

@@ -1,6 +1,6 @@
 package com.example.mc2.controller;
 
-import com.example.common.model.CircularMessage;
+import com.example.mc2.model.CircularMessage;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
