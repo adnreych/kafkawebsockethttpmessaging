@@ -23,30 +23,11 @@ import java.io.IOException;
 		basePackages = "com.example.mc2.repository"
 )
 @EntityScan(basePackages = "com.example.mc2.model")
-@EnableKafka
-@PropertySource({"classpath:kafka.properties"})
 public class Mc2Application {
 
 	public static void main(String[] args) {
 		SpringApplication.run(Mc2Application.class, args);
 	}
 
-	@Bean
-	public JsonDeserializer jsonDeserializer() {
-		return new JsonDeserializer() {
-			@Override
-			public Object deserialize(JsonParser p, DeserializationContext context) throws IOException {
-				return null;
-			}
-		};
-	}
-
-	@Bean
-	public ObjectMapper objectMapper() {
-		ObjectMapper mapper = JsonMapper.builder()
-				.addModule(new JavaTimeModule())
-				.build();
-		return mapper;
-	}
 
 }

@@ -7,7 +7,9 @@ import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.kafka.support.SendResult;
 import org.springframework.stereotype.Component;
+import org.springframework.util.concurrent.ListenableFuture;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
@@ -31,6 +33,8 @@ public class MyWebSocketHandler extends TextWebSocketHandler {
                 .build();
         CircularMessage circularMessage = mapper.readValue(message.getPayload(), CircularMessage.class);
         logger.info("circularMessage in mc2" + circularMessage.toString());
-        transportService.send(circularMessage);
+        ListenableFuture<SendResult<String, String>> send = transportService.send(circularMessage.toString());
+        SendResult<String, String> stringStringSendResult = send.get();
+        logger.info("circularMessage in mc2" + stringStringSendResult.toString());
     }
 }

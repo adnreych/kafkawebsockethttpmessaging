@@ -1,0 +1,37 @@
+server:
+  port: '8083'
+spring:
+  kafka:
+    bootstrap-servers: ${kafka_bootstrap_servers:kafka:9092}
+    properties:
+      sasl:
+        jaas:
+          config: org.apache.kafka.common.security.plain.PlainLoginModule required username=${kafka_username:'admin'} password=${kafka_password:'admin-secret'};
+        mechanism: PLAIN
+      security:
+        protocol: SASL_PLAINTEXT
+    producer:
+      client-id: example
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+      retries: 2
+    jaas:
+      enabled: true
+    listener:
+      poll-timeout: 1800000
+      concurrency: 1
+      ack-mode: manual_immediate
+  datasource:
+    url: 'jdbc:mariadb://localhost:3306/springbootdb'
+    username: root
+    password: root
+    driver-class-name: org.mariadb.jdbc.Driver
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MariaDB102Dialect
+logging:
+  level:
+    org:
+      apache:
+        kafka: 'OFF'
