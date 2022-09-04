@@ -6,19 +6,22 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import org.springframework.data.util.Pair;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
+import javax.persistence.Tuple;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.time.LocalDateTime;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.logging.Logger;
 
 @Component
 public class ScheduledJob {
 
-    private final AtomicBoolean enabled = new AtomicBoolean(false);
+    private final AtomicReference<Pair<Long, Boolean>> enabled = new AtomicReference<Pair<Long, Boolean>>(Pair.of(0L, false));
     private static final String URI = "ws://mc2:8083/socketHandler";
     private final Logger log = Logger.getLogger(this.getClass().getSimpleName());
 
@@ -33,13 +36,8 @@ public class ScheduledJob {
      */
     @Scheduled(fixedDelayString = "${interaction.interval-ms}")
     public void startInteraction() {
-        if (enabled.get()) {
-            Long currentSession = circularMessageRepository.findAll()
-                    .stream()
-                    .mapToLong(CircularMessage::getSessionId)
-                    .max()
-                    .orElse(0L) + 1L;
-            log.info("START INTERACTION WITH SESSION NUMBER " + currentSession);
+        if (enabled.get().getSecond()) {
+            Long currentSession = enabled.get().getFirst();
             CircularMessage circularMessage = new CircularMessage();
             circularMessage.setSessionId(currentSession);
             circularMessage.setMc1Timestamp(LocalDateTime.now());
@@ -68,7 +66,7 @@ public class ScheduledJob {
      * @param state состояние, на которое необходимо переключить
      */
     public void toggle(Boolean state, Long sessionId) {
-        enabled.set(state);
+        enabled.set(Pair.of(sessionId, state));
     }
 
 }

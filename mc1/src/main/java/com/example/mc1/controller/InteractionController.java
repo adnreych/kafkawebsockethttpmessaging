@@ -32,7 +32,9 @@ public class InteractionController {
      */
     @GetMapping("/start")
     public void startInteraction() {
-        scheduledJob.toggle(Boolean.TRUE, ms1InteractionService.getNewSessionId());
+        Long newSessionId = ms1InteractionService.getNewSessionId();
+        log.info("START INTERACTION WITH SESSION NUMBER " + newSessionId);
+        scheduledJob.toggle(Boolean.TRUE, newSessionId);
     }
 
     /**
