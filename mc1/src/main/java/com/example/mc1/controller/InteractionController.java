@@ -1,6 +1,7 @@
 package com.example.mc1.controller;
 
 import com.example.mc1.model.CircularMessage;
+import com.example.mc1.model.InteractionResult;
 import com.example.mc1.service.Ms1InteractionService;
 import com.example.mc1.service.ScheduledJob;
 import org.springframework.http.MediaType;
@@ -31,15 +32,20 @@ public class InteractionController {
      */
     @GetMapping("/start")
     public void startInteraction() {
-        scheduledJob.toggle(Boolean.TRUE);
+        scheduledJob.toggle(Boolean.TRUE, ms1InteractionService.getNewSessionId());
     }
 
     /**
-     * Остановить взаимодействие
+     * Остановить взаимодействие и вывести в лог результат
      */
     @GetMapping("/stop")
     public void stopInteraction() {
-        scheduledJob.toggle(Boolean.FALSE);
+        Long currentSessionId = ms1InteractionService.getCurrentSessionId();
+        scheduledJob.toggle(Boolean.FALSE, currentSessionId);
+        InteractionResult interactionResult = ms1InteractionService.getInteractionResult(currentSessionId);
+        log.info("INTERACTION TIME IN MS:" + interactionResult.getInteractionTimeInMs() +
+                "\nINTERACTION COUNT:" + interactionResult.getInteractionsCount()
+        );
     }
 
     /**

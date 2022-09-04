@@ -67,7 +67,7 @@ public class ScheduledJob {
      *
      * @param state состояние, на которое необходимо переключить
      */
-    public void toggle(Boolean state) {
+    public void toggle(Boolean state, Long sessionId) {
         enabled.set(state);
     }
 
