@@ -28,6 +28,9 @@ public class ScheduledJob {
         this.circularMessageRepository = circularMessageRepository;
     }
 
+    /**
+     * Шедуллер для запуска межсервисного взаимодействия
+     */
     @Scheduled(fixedDelayString = "${interaction.interval-ms}")
     public void startInteraction() {
         if (enabled.get()) {
@@ -59,6 +62,11 @@ public class ScheduledJob {
 
     }
 
+    /**
+     * Переключить шедуллер на указанное сосотояние
+     *
+     * @param state состояние, на которое необходимо переключить
+     */
     public void toggle(Boolean state) {
         enabled.set(state);
     }

@@ -18,8 +18,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
-import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 @Service
 public class TransportService {
@@ -51,11 +51,12 @@ public class TransportService {
         circularMessage.setMc3Timestamp(LocalDateTime.now());
         circularMessage = circularMessageRepository.save(circularMessage);
         acknowledgment.acknowledge();
-        webClient.post().uri("/apply")
+        WebClient client = WebClient.create("http://mc1:8082");
+        CircularMessage block = client.post().uri("/apply")
                 .body(Mono.just(circularMessage), CircularMessage.class)
                 .accept(MediaType.APPLICATION_JSON).retrieve()
-                .bodyToMono(CircularMessage.class)
-                .timeout(Duration.ofMillis(5000));
+                .bodyToMono(CircularMessage.class).block();
+        logger.info("SEEEND" + Objects.requireNonNull(block).toString());
     }
 
 }

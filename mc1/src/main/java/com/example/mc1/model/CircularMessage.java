@@ -1,12 +1,15 @@
 package com.example.mc1.model;
 
 
-import lombok.Data;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.Objects;
 
-@Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "circular_message")
 public class CircularMessage {
@@ -31,4 +34,33 @@ public class CircularMessage {
 
     @Column(name = "end_timestamp")
     private LocalDateTime endTimestamp;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        CircularMessage that = (CircularMessage) o;
+        return Objects.equals(sessionId, that.sessionId) &&
+                Objects.equals(mc1Timestamp, that.mc1Timestamp) &&
+                Objects.equals(mc2Timestamp, that.mc2Timestamp) &&
+                Objects.equals(mc3Timestamp, that.mc3Timestamp) &&
+                Objects.equals(endTimestamp, that.endTimestamp);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(sessionId, mc1Timestamp, mc2Timestamp, mc3Timestamp, endTimestamp);
+    }
+
+    @Override
+    public String toString() {
+        return "CircularMessage{" +
+                "id=" + id +
+                ", sessionId=" + sessionId +
+                ", mc1Timestamp=" + mc1Timestamp +
+                ", mc2Timestamp=" + mc2Timestamp +
+                ", mc3Timestamp=" + mc3Timestamp +
+                ", endTimestamp=" + endTimestamp +
+                '}';
+    }
 }
