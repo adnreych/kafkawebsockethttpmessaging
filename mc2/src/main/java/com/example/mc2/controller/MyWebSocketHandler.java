@@ -33,8 +33,6 @@ public class MyWebSocketHandler extends TextWebSocketHandler {
                 .build();
         CircularMessage circularMessage = mapper.readValue(message.getPayload(), CircularMessage.class);
         logger.info("circularMessage in mc2" + circularMessage.toString());
-        ListenableFuture<SendResult<String, String>> send = transportService.send(circularMessage.toString());
-        SendResult<String, String> stringStringSendResult = send.get();
-        logger.info("circularMessage in mc2" + stringStringSendResult.toString());
+        transportService.send(circularMessage);
     }
 }

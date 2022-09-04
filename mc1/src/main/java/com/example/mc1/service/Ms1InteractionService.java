@@ -6,16 +6,19 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.time.LocalDateTime;
+import java.util.logging.Logger;
 
 @Service
 public class Ms1InteractionService {
 
-    private static final String URI = "ws://mc2:8083/socketHandler";
+    private final Logger log = Logger.getLogger(this.getClass().getSimpleName());
 
     private final CircularMessageRepository circularMessageRepository;
 
@@ -24,23 +27,9 @@ public class Ms1InteractionService {
     }
 
 
-    public void startInteraction() {
-        CircularMessage circularMessage = new CircularMessage();
-        circularMessage.setMc1Timestamp(LocalDateTime.now());
-        circularMessage = circularMessageRepository.save(circularMessage);
-        try {
-            final WebsocketClientEndpoint clientEndPoint = new WebsocketClientEndpoint(new URI(URI));
-            ObjectMapper mapper = JsonMapper.builder()
-                    .addModule(new JavaTimeModule())
-                    .build();
-            String json = mapper.writeValueAsString(circularMessage);
-            clientEndPoint.sendMessage(json);
-
-        } catch (URISyntaxException ex) {
-            System.err.println("URISyntaxException exception: " + ex.getMessage());
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }
-
+    public CircularMessage endInteraction(CircularMessage circularMessage) {
+        circularMessage.setEndTimestamp(LocalDateTime.now());
+        log.info("END INTERACTION WITH SESSION NUMBER " + circularMessage.getSessionId());
+        return circularMessageRepository.save(circularMessage);
     }
 }
