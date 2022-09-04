@@ -23,8 +23,7 @@ public class CircularMessage {
     @Column(name = "id", nullable = false, updatable = false)
     private Long id;
 
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    @Column(name = "sesion_id", updatable = false)
+    @Column(name = "session_id", updatable = false)
     private Long sessionId;
 
     @Column(name = "MC1_timestamp")
