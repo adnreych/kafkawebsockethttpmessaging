@@ -50,12 +50,10 @@ public class Ms1InteractionService {
 
     public InteractionResult getInteractionResult(Long sessionId) {
         List<CircularMessage> allBySessionId = circularMessageRepository.findAllBySessionId(sessionId);
-        log.info("allBySessionId" + allBySessionId.toString());
         allBySessionId = allBySessionId.stream()
                 .filter(c -> c.getMc1Timestamp() != null && c.getEndTimestamp() != null)
                 .collect(Collectors.toList());
         Integer interactionsCount = allBySessionId.size();
-        log.info("allBySessionId2" + allBySessionId.toString());
         CircularMessage min = allBySessionId.stream()
                 .min(Comparator.nullsLast(
                         (e1, e2) -> e2.getMc1Timestamp().compareTo(e1.getMc1Timestamp()))).get();

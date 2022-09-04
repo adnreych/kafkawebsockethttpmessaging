@@ -30,7 +30,6 @@ public class MyWebSocketHandler extends TextWebSocketHandler {
                 .addModule(new JavaTimeModule())
                 .build();
         CircularMessage circularMessage = mapper.readValue(message.getPayload(), CircularMessage.class);
-        logger.info("circularMessage in mc2" + circularMessage.toString());
         transportService.send(circularMessage);
     }
 }

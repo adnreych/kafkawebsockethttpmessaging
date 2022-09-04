@@ -11,6 +11,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.Tuple;
+import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.time.LocalDateTime;
@@ -49,10 +50,13 @@ public class ScheduledJob {
                         .build();
                 String json = mapper.writeValueAsString(circularMessage);
                 clientEndPoint.sendMessage(json);
+                clientEndPoint.userSession.close();
 
             } catch (URISyntaxException ex) {
                 System.err.println("URISyntaxException exception: " + ex.getMessage());
             } catch (JsonProcessingException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
                 e.printStackTrace();
             }
         }
