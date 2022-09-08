@@ -24,24 +24,47 @@ services:
       - zookeeper
     volumes:
       - ./:/etc/kafka
+  mariadb:
+    image: 'bitnami/mariadb:latest'
+    restart: 'always'
+    environment:
+      MARIADB_ROOT_PASSWORD: root
+    volumes:
+      - ./init:/docker-entrypoint-initdb.d
+    expose:
+      - "3306"
+    ports:
+      - "3306:3306"
   mc1:
+    restart: 'on-failure'
     build: .
     command: java -jar /app/mc1/target/mc1-0.0.1-SNAPSHOT.jar
     environment:
-      SPRING_DATASOURCE_URL: jdbc:mariadb://host.docker.internal:3306/springbootdb
+      SPRING_DATASOURCE_URL: jdbc:mariadb://mariadb:3306/springbootdb
     ports:
       - "8082:8082"
+    depends_on:
+      mariadb:
+        condition: service_started
   mc2:
+    restart: 'on-failure'
     build: .
     command: java -jar /app/mc2/target/mc2-0.0.1-SNAPSHOT.jar
     environment:
-      SPRING_DATASOURCE_URL: jdbc:mariadb://host.docker.internal:3306/springbootdb
+      SPRING_DATASOURCE_URL: jdbc:mariadb://mariadb:3306/springbootdb
     ports:
       - "8083:8083"
+    depends_on:
+      mariadb:
+        condition: service_started
   mc3:
+    restart: 'on-failure'
     build: .
     command: java -jar /app/mc3/target/mc3-0.0.1-SNAPSHOT.jar
     environment:
-      SPRING_DATASOURCE_URL: jdbc:mariadb://host.docker.internal:3306/springbootdb
+      SPRING_DATASOURCE_URL: jdbc:mariadb://mariadb:3306/springbootdb
     ports:
       - "8084:8084"
+    depends_on:
+      mariadb:
+        condition: service_started

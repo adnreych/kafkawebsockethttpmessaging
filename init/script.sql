@@ -1,6 +1,6 @@
 -- springbootdb.circular_message definition
-
-CREATE TABLE `circular_message` (
+CREATE DATABASE IF NOT EXISTS `springbootdb`;
+CREATE TABLE IF NOT EXISTS springbootdb.circular_message (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `end_timestamp` datetime(6) DEFAULT NULL,
   `mc1_timestamp` datetime(6) DEFAULT NULL,
